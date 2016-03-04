@@ -16,7 +16,7 @@ const tpl = `Hey, everybody. Have you seen the #{{ .Name }} channel recently?
 
 {{ if .Purpose.Value -}}
 Purpose: {{ .Purpose.Value }}
-{{- else -}}
+{{ else }}
 Purpose: _(not set)_
 {{ end }}`
 
@@ -29,17 +29,26 @@ func main() {
 	}
 
 	api := slack.New(tkn)
-	ch, err := api.GetChannels(true)
+
+	c, err := getRandomChannel(api)
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	rand.Seed(time.Now().UnixNano())
-	c := ch[rand.Intn(len(ch))]
 
 	var b bytes.Buffer
 	t.Execute(&b, c)
 	fmt.Println("--------")
 	fmt.Print(b.String())
 	fmt.Println("--------")
+}
+
+func getRandomChannel(api *slack.Client) (slack.Channel, error) {
+	ch, err := api.GetChannels(true)
+	if err != nil {
+		return slack.Channel{}, err
+	}
+
+	rand.Seed(time.Now().UnixNano())
+
+	return ch[rand.Intn(len(ch))], nil
 }
