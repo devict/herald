@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"fmt"
 	"log"
 	"math/rand"
 	"os"
@@ -20,9 +19,14 @@ Purpose: {{ .Purpose.Value }}
 Purpose: _(not set)_
 {{ end }}`
 
-func main() {
-	t := template.Must(template.New("msg").Parse(tpl))
+var t *template.Template
 
+func init() {
+	t = template.Must(template.New("msg").Parse(tpl))
+	rand.Seed(time.Now().UnixNano())
+}
+
+func main() {
 	tkn := os.Getenv("SLACK_TOKEN")
 	if tkn == "" {
 		log.Fatal("Env var SLACK_TOKEN was not set")
@@ -32,14 +36,28 @@ func main() {
 
 	c, err := getRandomChannel(api)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 
+	if err := announceChannel(api, c); err != nil {
+		log.Print(err)
+	}
+}
+
+func announceChannel(api *slack.Client, c slack.Channel) error {
 	var b bytes.Buffer
-	t.Execute(&b, c)
-	fmt.Println("--------")
-	fmt.Print(b.String())
-	fmt.Println("--------")
+	if err := t.Execute(&b, c); err != nil {
+		return err
+	}
+
+	log.Printf("Sending message\n%s", b.String())
+
+	params := slack.NewPostMessageParameters()
+	params.AsUser = true
+	params.EscapeText = false
+	_, _, err := api.PostMessage("herald-test", b.String(), params)
+
+	return err
 }
 
 func getRandomChannel(api *slack.Client) (slack.Channel, error) {
@@ -47,8 +65,6 @@ func getRandomChannel(api *slack.Client) (slack.Channel, error) {
 	if err != nil {
 		return slack.Channel{}, err
 	}
-
-	rand.Seed(time.Now().UnixNano())
 
 	return ch[rand.Intn(len(ch))], nil
 }
