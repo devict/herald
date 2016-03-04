@@ -1,0 +1,16 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"path": "github.com/nlopes/slack",
+			"revision": "4fa1aef72346bbd2188bd5d432d0b839e562cdf1",
+			"revisionTime": "2016-02-24T08:49:30Z"
+		},
+		{
+			"path": "golang.org/x/net/websocket",
+			"revision": "4599ae7937fce9b670ce32b8ad32bbb7ae726b3e",
+			"revisionTime": "2016-02-20T14:44:54-08:00"
+		}
+	]
+}
