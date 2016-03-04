@@ -12,17 +12,12 @@ import (
 	"github.com/nlopes/slack"
 )
 
-const tpl = `Hey, everybody. Have you seen the #{{ .Name }} channel?
+const tpl = `Hey, everybody. Have you seen the #{{ .Name }} channel recently?
 
 {{ if .Purpose.Value -}}
 Purpose: {{ .Purpose.Value }}
 {{- else -}}
-Purpose: **(not set)**
-{{- end }}
-{{ if .Topic.Value -}}
-Current Topic: {{ .Topic.Value }}
-{{- else -}}
-Current Topic: **(not set)**
+Purpose: _(not set)_
 {{ end }}`
 
 func main() {
