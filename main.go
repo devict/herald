@@ -4,8 +4,10 @@ import (
 	"bytes"
 	"fmt"
 	"log"
+	"math/rand"
 	"os"
 	"text/template"
+	"time"
 
 	"github.com/nlopes/slack"
 )
@@ -35,14 +37,14 @@ func main() {
 	ch, err := api.GetChannels(true)
 	if err != nil {
 		log.Fatal(err)
-		return
 	}
+
+	rand.Seed(time.Now().UnixNano())
+	c := ch[rand.Intn(len(ch))]
+
 	var b bytes.Buffer
-	for _, c := range ch {
-		b.Reset()
-		t.Execute(&b, c)
-		fmt.Println("--------")
-		fmt.Print(b.String())
-		fmt.Println("--------")
-	}
+	t.Execute(&b, c)
+	fmt.Println("--------")
+	fmt.Print(b.String())
+	fmt.Println("--------")
 }
