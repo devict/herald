@@ -12,7 +12,7 @@ import (
 	"github.com/nlopes/slack"
 )
 
-const tpl = `Hey, everybody. Have you seen the #{{ .Name }} channel recently?
+const tpl = `Hey, everybody. Have you seen the <#{{ .ID }}|{{ .Name }}> channel recently?
 
 {{ if .Purpose.Value -}}
 Purpose: {{ .Purpose.Value }}
