@@ -23,7 +23,7 @@ func init() {
 	t = template.Must(template.New("msg").Parse(tpl))
 }
 
-func announceChannel(coll *mgo.Collection, api *slack.Client, c slack.Channel) error {
+func announceChannel(coll *mgo.Collection, api *slack.Client, dest string, c slack.Channel) error {
 	var b bytes.Buffer
 	if err := t.Execute(&b, c); err != nil {
 		return err
@@ -34,7 +34,7 @@ func announceChannel(coll *mgo.Collection, api *slack.Client, c slack.Channel) e
 	params := slack.NewPostMessageParameters()
 	params.AsUser = true
 	params.EscapeText = false
-	if _, _, err := api.PostMessage("herald-test", b.String(), params); err != nil {
+	if _, _, err := api.PostMessage(dest, b.String(), params); err != nil {
 		return err
 	}
 
