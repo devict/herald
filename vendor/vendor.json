@@ -11,6 +11,26 @@
 			"path": "golang.org/x/net/websocket",
 			"revision": "4599ae7937fce9b670ce32b8ad32bbb7ae726b3e",
 			"revisionTime": "2016-02-20T14:44:54-08:00"
+		},
+		{
+			"path": "gopkg.in/mgo.v2",
+			"revision": "d90005c5262a3463800497ea5a89aed5fe22c886",
+			"revisionTime": "2016-02-08T22:46:34-02:00"
+		},
+		{
+			"path": "gopkg.in/mgo.v2/bson",
+			"revision": "d90005c5262a3463800497ea5a89aed5fe22c886",
+			"revisionTime": "2016-02-08T22:46:34-02:00"
+		},
+		{
+			"path": "gopkg.in/mgo.v2/internal/sasl",
+			"revision": "d90005c5262a3463800497ea5a89aed5fe22c886",
+			"revisionTime": "2016-02-08T22:46:34-02:00"
+		},
+		{
+			"path": "gopkg.in/mgo.v2/internal/scram",
+			"revision": "d90005c5262a3463800497ea5a89aed5fe22c886",
+			"revisionTime": "2016-02-08T22:46:34-02:00"
 		}
 	]
 }
