@@ -3,6 +3,11 @@
 	"ignore": "test",
 	"package": [
 		{
+			"path": "github.com/kelseyhightower/envconfig",
+			"revision": "e6e597eacaace4d622d896cd9b022276660c2393",
+			"revisionTime": "2016-03-03T23:37:20-08:00"
+		},
+		{
 			"path": "github.com/nlopes/slack",
 			"revision": "4fa1aef72346bbd2188bd5d432d0b839e562cdf1",
 			"revisionTime": "2016-02-24T08:49:30Z"
