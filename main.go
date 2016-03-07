@@ -7,35 +7,36 @@ import (
 	"time"
 
 	"github.com/nlopes/slack"
+	"gopkg.in/mgo.v2"
 )
 
-func init() {
-	rand.Seed(time.Now().UnixNano())
-}
-
 func main() {
+	rand.Seed(time.Now().UnixNano())
+
 	tkn := os.Getenv("SLACK_TOKEN")
 	if tkn == "" {
 		log.Fatal("Env var SLACK_TOKEN was not set")
 	}
-
 	api := slack.New(tkn)
 
-	c, err := getRandomChannel(api)
+	url := os.Getenv("MONGOLAB_URI")
+	if url == "" {
+		log.Fatal("Env var MONGOLAB_URI was not set")
+	}
+
+	log.Print("Connecting to ", url)
+	db, err := mgo.Dial(url)
 	if err != nil {
-		log.Print(err)
+		log.Fatal(err)
 	}
+	coll := db.DB("herald").C("channels")
 
-	if err := announceChannel(api, c); err != nil {
-		log.Print(err)
-	}
-}
-
-func getRandomChannel(api *slack.Client) (slack.Channel, error) {
-	ch, err := api.GetChannels(true)
+	c, err := selectChannel(coll, api)
 	if err != nil {
-		return slack.Channel{}, err
+		log.Fatal(err)
 	}
 
-	return ch[rand.Intn(len(ch))], nil
+	if err := announceChannel(coll, api, c); err != nil {
+		log.Fatal(err)
+	}
 }

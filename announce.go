@@ -6,6 +6,7 @@ import (
 	"log"
 
 	"github.com/nlopes/slack"
+	"gopkg.in/mgo.v2"
 )
 
 const tpl = `Hey, everybody. Have you seen the <#{{ .ID }}|{{ .Name }}> channel recently?
@@ -22,7 +23,7 @@ func init() {
 	t = template.Must(template.New("msg").Parse(tpl))
 }
 
-func announceChannel(api *slack.Client, c slack.Channel) error {
+func announceChannel(coll *mgo.Collection, api *slack.Client, c slack.Channel) error {
 	var b bytes.Buffer
 	if err := t.Execute(&b, c); err != nil {
 		return err
@@ -33,7 +34,13 @@ func announceChannel(api *slack.Client, c slack.Channel) error {
 	params := slack.NewPostMessageParameters()
 	params.AsUser = true
 	params.EscapeText = false
-	_, _, err := api.PostMessage("herald-test", b.String(), params)
+	if _, _, err := api.PostMessage("herald-test", b.String(), params); err != nil {
+		return err
+	}
 
-	return err
+	if err := coll.Insert(Channel{Name: c.Name}); err != nil {
+		return err
+	}
+
+	return nil
 }
