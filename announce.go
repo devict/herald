@@ -2,8 +2,8 @@ package main
 
 import (
 	"bytes"
-	"html/template"
 	"log"
+	"text/template"
 
 	"github.com/nlopes/slack"
 	"gopkg.in/mgo.v2"
