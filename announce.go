@@ -29,7 +29,7 @@ func announceChannel(coll *mgo.Collection, api *slack.Client, dest string, c sla
 		return err
 	}
 
-	log.Printf("Sending this message to #%s\n%s", dest, b.String())
+	log.Printf("Sending this message to %s\n%s", dest, b.String())
 
 	params := slack.NewPostMessageParameters()
 	params.AsUser = true
