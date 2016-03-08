@@ -13,9 +13,9 @@ const tpl = `Hey, everybody. Have you seen the <#{{ .ID }}|{{ .Name }}> channel 
 
 {{ if .Purpose.Value -}}
 Purpose: {{ .Purpose.Value }}
-{{ else }}
+{{- else -}}
 Purpose: _(not set)_
-{{ end }}`
+{{- end -}}`
 
 var t *template.Template
 
