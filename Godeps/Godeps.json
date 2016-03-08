@@ -1,8 +1,5 @@
 {
     "ImportPath": "github.com/devict/herald",
     "GoVersion": "go1.6",
-    "Packages": [
-        "./..."
-    ],
     "Deps": []
 }
