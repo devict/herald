@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"net/url"
 
 	"github.com/kelseyhightower/envconfig"
 )
@@ -10,6 +11,7 @@ import (
 type Config struct {
 	SlackToken string `envconfig:"SLACK_TOKEN"`
 	MongoURI   string `envconfig:"MONGOLAB_URI"`
+	MongoDB    string
 	DestChan   string `envconfig:"DEST_CHAN"`
 }
 
@@ -27,6 +29,15 @@ func NewConfig() (Config, error) {
 	if c.MongoURI == "" {
 		return Config{}, errors.New("Missing env var MONGOLAB_URI")
 	}
+	u, err := url.Parse(c.MongoURI)
+	if err != nil {
+		return Config{}, err
+	}
+	if len(u.Path) < 2 {
+		return Config{}, errors.New("Missing DB at end of MONGOLAB_URI")
+	}
+	c.MongoDB = string(u.Path[1:])
+
 	if c.DestChan == "" {
 		return Config{}, errors.New("Missing env var DEST_CHAN")
 	}

@@ -21,7 +21,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	coll := db.DB("herald").C("channels")
+	coll := db.DB(cnf.MongoDB).C("channels")
 
 	api := slack.New(cnf.SlackToken)
 
