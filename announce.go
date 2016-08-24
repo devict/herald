@@ -9,15 +9,12 @@ import (
 	"gopkg.in/mgo.v2"
 )
 
-const tpl = `:trumpet::trumpet:Hear ye! Hear ye!
+const tpl = `:trumpet::trumpet:
+Hear ye! Hear ye!
 
 Hast thou visited the <#{{ .ID }}|{{ .Name }}> channel recently?
 
-{{ if .Purpose.Value -}}
-Purpose: {{ .Purpose.Value }}
-{{- else -}}
-Purpose: _(not set)_
-{{- end -}}
+Purpose: {{ if .Purpose.Value }}{{ .Purpose.Value }}{{ else }}_(not set)_{{ end }}
 :trumpet::trumpet:`
 
 var t *template.Template

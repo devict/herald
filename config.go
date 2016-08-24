@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"log"
 	"net/url"
 
 	"github.com/kelseyhightower/envconfig"
@@ -37,6 +38,8 @@ func NewConfig() (Config, error) {
 		return Config{}, errors.New("Missing DB at end of MONGOLAB_URI")
 	}
 	c.MongoDB = string(u.Path[1:])
+
+	log.Printf("%+v", c)
 
 	if c.DestChan == "" {
 		return Config{}, errors.New("Missing env var DEST_CHAN")
