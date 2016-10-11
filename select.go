@@ -28,7 +28,11 @@ func selectChannel(coll *mgo.Collection, api *slack.Client) (slack.Channel, erro
 			log.Print("Skip it.")
 			ch = append(ch[:n], ch[n+1:]...)
 			continue
-		}
+                } else if ch[n].Name = cnf.DestChan {
+			log.Print("Skip it. Don't announce destination channel")
+			ch = append(ch[:n], ch[n+1:]...)
+			continue
+                }
 
 		return ch[n], nil
 	}
