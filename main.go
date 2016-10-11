@@ -26,7 +26,9 @@ func main() {
 
 	api := slack.New(cnf.SlackToken)
 
-	c, err := selectChannel(coll, api)
+	ignore := Channels{Channel{Name: cnf.DestChan}}
+
+	c, err := selectChannel(coll, api, ignore)
 	if err != nil {
 		log.Fatal(err)
 	}
