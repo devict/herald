@@ -47,6 +47,7 @@ func selectChannel(coll *mgo.Collection, api *slack.Client, ignore Channels) (sl
 		log.Print("Considering ", all[n].Name)
 		if ignore.Contains(all[n].Name) {
 			log.Print("Skip it.")
+			all = append(all[:n], all[n+1:]...)
 			continue
 		}
 		return all[n], nil
