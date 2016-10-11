@@ -37,7 +37,7 @@ func NewConfig() (Config, error) {
 	if len(u.Path) < 2 {
 		return Config{}, errors.New("Missing DB at end of MONGOLAB_URI")
 	}
-	c.MongoDB = string(u.Path[1:])
+	c.MongoDB = u.Path[1:]
 
 	log.Printf("%+v", c)
 
