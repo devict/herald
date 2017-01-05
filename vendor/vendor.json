@@ -37,5 +37,6 @@
 			"revision": "d90005c5262a3463800497ea5a89aed5fe22c886",
 			"revisionTime": "2016-02-08T22:46:34-02:00"
 		}
-	]
+	],
+	"rootPath": "github.com/devict/herald"
 }
