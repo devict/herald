@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"math/rand"
+	"strings"
 	"time"
 
 	"github.com/nlopes/slack"
@@ -26,7 +27,11 @@ func main() {
 
 	api := slack.New(cnf.SlackToken)
 
-	ignore := Channels{Channel{Name: cnf.DestChan}}
+	ignore := Channels{
+		Channel{
+			Name: strings.TrimLeft(cnf.DestChan, "#"),
+		},
+	}
 
 	c, err := selectChannel(coll, api, ignore)
 	if err != nil {
