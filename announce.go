@@ -14,7 +14,11 @@ Hear ye! Hear ye!
 
 Hast thou visited the <#{{ .ID }}|{{ .Name }}> channel recently?
 
-Purpose: {{ if .Purpose.Value }}{{ .Purpose.Value }}{{ else }}_(not set)_{{ end }}
+{{- if .Purpose.Value }}
+{{ .Purpose.Value }}
+{{- else if .Topic.Value }}
+{{ .Topic.Value }}
+{{- else }}
 :trumpet::trumpet:`
 
 var t *template.Template
