@@ -3,15 +3,12 @@ package main
 import (
 	"log"
 	"fmt"
+
 	"github.com/nlopes/slack"
 	"github.com/google/go-cmp/cmp"
 	"gopkg.in/mgo.v2"
 )
 
-type ChannelAndID struct {
-	Channel Channel
-	ID string
-}
 
 func announceChannelDifferences(coll *mgo.Collection, api *slack.Client, dest string) error {
 	log.Print("Announce channel differences since last run:")
@@ -22,14 +19,14 @@ func announceChannelDifferences(coll *mgo.Collection, api *slack.Client, dest st
 	if err != nil {
 		return err
 	}
-	current := make([]ChannelAndID, 0, 50)
-	for _, v := range rawCurrent {
-		current = append(current, ChannelAndID{Channel: Channel{v.Name}, ID: v.ID})
+	current := make([]Channel, len(rawCurrent))
+	for i, v := range rawCurrent {
+		current[i] = Channel{Name: v.Name, ID: v.ID}
 	}
 
 
 	// Get the channel list from last run
-	var old []ChannelAndID
+	var old []Channel
 	if err := coll.Find(nil).All(&old); err != nil {
 		return err
 	}
@@ -59,8 +56,7 @@ func announceChannelDifferences(coll *mgo.Collection, api *slack.Client, dest st
 	params := slack.NewPostMessageParameters()
 	params.AsUser = true
 	params.EscapeText = false
-	msg := fmt.Sprintf("Channel changes:\n%s", diff)
-	if _, _, err := api.PostMessage(dest, msg, params); err != nil {
+	if _, _, err := api.PostMessage(dest, fmt.Sprintf("Channel changes:\n```%s```", diff), params); err != nil {
 		return err
 	}
 	log.Print("Sent")
@@ -77,8 +73,10 @@ func announceChannelDifferences(coll *mgo.Collection, api *slack.Client, dest st
 
 
 
-func writeChannelsToColl(coll *mgo.Collection, chans []ChannelAndID) error {
-	coll.DropCollection()
+func writeChannelsToColl(coll *mgo.Collection, chans []Channel) error {
+	if err := coll.DropCollection(); err != nil {
+		return err
+	}
 	for _, v := range chans {
 		if err := coll.Insert(v); err != nil {
 			return err
