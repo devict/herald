@@ -14,6 +14,7 @@ type Config struct {
 	MongoURI   string `envconfig:"MONGOLAB_URI"`
 	MongoDB    string
 	DestChan   string `envconfig:"DEST_CHAN"`
+	DiffChan   string `envconfig:"DIFF_CHAN"`
 }
 
 // NewConfig parses a Config from the environment.
@@ -44,6 +45,10 @@ func NewConfig() (Config, error) {
 	if c.DestChan == "" {
 		return Config{}, errors.New("Missing env var DEST_CHAN")
 	}
+	if c.DiffChan == "" {
+		return Config{}, errors.New("Missing env var DIFF_CHAN")
+	}
+
 
 	return c, nil
 }

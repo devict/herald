@@ -41,4 +41,9 @@ func main() {
 	if err := announceChannel(coll, api, cnf.DestChan, c); err != nil {
 		log.Fatal(err)
 	}
+
+	coll = db.DB(cnf.MongoDB).C("lastChannelList")
+	if err := announceChannelDifferences(coll, api, cnf.DiffChan); err != nil {
+		log.Fatal(err)
+	}
 }
