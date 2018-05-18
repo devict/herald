@@ -27,13 +27,11 @@ func announceChannelDifferences(coll *mgo.Collection, api *slack.Client, dest st
 	if err := coll.Find(nil).All(&old); err != nil {
 		return err
 	}
+
 	if old == nil {
 		// first run!, write current channels to collection and exit
-		if err := writeChannelsToColl(coll, current); err != nil {
-			return err
-		}
 		log.Print("No announcement: nothing to compare against. comparison will happen at next run.")
-		return nil
+		return writeChannelsToColl(coll, current)
 	}
 
 	// Compare
@@ -57,11 +55,7 @@ func announceChannelDifferences(coll *mgo.Collection, api *slack.Client, dest st
 	log.Print("Sent")
 
 	// Saving current channel list
-	if err := writeChannelsToColl(coll, current); err != nil {
-		return err
-	}
-
-	return nil
+	return writeChannelsToColl(coll, current)
 }
 
 func writeChannelsToColl(coll *mgo.Collection, chans []Channel) error {
