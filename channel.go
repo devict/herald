@@ -4,6 +4,7 @@ package main
 // appropriate for storing in mongo.
 type Channel struct {
 	Name string `bson:"name"`
+	ID string
 }
 
 // Channels is a collection of Channels.
