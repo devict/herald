@@ -1,18 +1,16 @@
 package main
 
 import (
-	"log"
 	"fmt"
+	"log"
 
-	"github.com/nlopes/slack"
 	"github.com/google/go-cmp/cmp"
+	"github.com/nlopes/slack"
 	"gopkg.in/mgo.v2"
 )
 
-
 func announceChannelDifferences(coll *mgo.Collection, api *slack.Client, dest string) error {
 	log.Print("Announce channel differences since last run:")
-
 
 	// Get current channels (and their IDs)
 	rawCurrent, err := api.GetChannels(true) // true ignores archived channels
@@ -23,7 +21,6 @@ func announceChannelDifferences(coll *mgo.Collection, api *slack.Client, dest st
 	for i, v := range rawCurrent {
 		current[i] = Channel{Name: v.Name, ID: v.ID}
 	}
-
 
 	// Get the channel list from last run
 	var old []Channel
@@ -39,14 +36,12 @@ func announceChannelDifferences(coll *mgo.Collection, api *slack.Client, dest st
 		return nil
 	}
 
-
 	// Compare
 	diff := cmp.Diff(old, current)
 	if diff == "" {
 		log.Print("No announcement: no differences.")
 		return nil
 	}
-
 
 	// Print differences
 	log.Print("Differences:")
@@ -61,17 +56,13 @@ func announceChannelDifferences(coll *mgo.Collection, api *slack.Client, dest st
 	}
 	log.Print("Sent")
 
-
 	// Saving current channel list
 	if err := writeChannelsToColl(coll, current); err != nil {
 		return err
 	}
 
-
 	return nil
 }
-
-
 
 func writeChannelsToColl(coll *mgo.Collection, chans []Channel) error {
 	if err := coll.DropCollection(); err != nil {
@@ -84,4 +75,3 @@ func writeChannelsToColl(coll *mgo.Collection, chans []Channel) error {
 	}
 	return nil
 }
-
