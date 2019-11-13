@@ -11,7 +11,7 @@ import (
 
 const tpl = `:goose-honk-left: HONK! :goose-honk-right:
 
-To do: ~Remind everyone about the <#{{ .ID }}|{{ .Name }}> channel~
+To do: ~Remind everyone about the~ *<#{{ .ID }}|{{ .Name }}>* ~channel~
 
 Purpose: {{ if .Purpose.Value }}{{ .Purpose.Value }}{{ else }}_(not set)_{{ end }}
 
