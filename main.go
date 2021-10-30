@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/nlopes/slack"
-	"gopkg.in/mgo.v2"
+	mgo "gopkg.in/mgo.v2"
 )
 
 func main() {
